@@ -1,0 +1,17 @@
+<div class="w-full h-full flex flex-col space-y-4">
+    <div class="grid grid-cols-4 gap-4">
+        <div class="flex flex-col space-y-2">
+            <label class="text-sm" for="name">Etiket Adı</label>
+            <input class="m-0" pInputText id="name" [(ngModel)]="value.name" />
+        </div>
+        <div class="flex flex-col col-span-3 space-y-2">
+            <label class="text-sm" for="description">Açıklama</label>
+            <input class="m-0" pInputText id="description" [(ngModel)]="value.description" />
+        </div>
+    </div>    
+
+    <div class="flex justify-end space-x-4 pt-2">
+        <p-button (onClick)="close()" label="İptal" severity="secondary" [text]="true"></p-button>
+        <p-button (onClick)="save()" label="Kaydet"></p-button>
+    </div>
+</div>   
