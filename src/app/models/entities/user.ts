@@ -5,5 +5,5 @@ export interface UserEntity {
   tckn: string;
   password: string;
   email: string;
-  role: Role;
+  role: any;
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { lastValueFrom } from 'rxjs';
-import { UserEntity } from '../models/entities/user-entity';
+import { UserEntity } from '../models/entities/user';
 
 @Injectable({
   providedIn: 'root'

@@ -1,5 +1,5 @@
 import { Time } from "../common/time";
-import { UserEntity } from "./user-entity";
+import { UserEntity } from "./user";
 
 export interface Worklog {
     id: number;
