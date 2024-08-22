@@ -25,4 +25,5 @@ export class MenuItem {
 export const menuItems : MenuItem[] = [
     new MenuItem("Ana Sayfa", "pi-home", "/dashboard", null),
     new MenuItem("Etiketler", "pi-tags", "/exercise-tags", Role.ADMIN),
+    new MenuItem("PDKS Veri Yükleme", "pi-file-arrow-up", "/import-pdks", Role.ADMIN),
 ];

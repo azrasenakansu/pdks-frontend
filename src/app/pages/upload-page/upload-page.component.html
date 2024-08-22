@@ -1,0 +1,28 @@
+<div class=" flex flex-col w-full space-y-8 !overflow-y-auto h-full">
+    <div class="w-full  rounded-xl flex space-x-8 place-content-between items-center">
+        <div class="flex flex-col space-y-3">
+            <h1 class="m-0">PDKS Veri Yükleme</h1>
+            <p class="m-0">Sisteme bu ekran üzerinden yükleme yapabilirsiniz.</p>
+        </div>
+    </div>
+    <div class="w-full h-full flex flex-col space-y-4">
+        <p-fileUpload 
+        [disabled]="uploadDisable"
+        mode="advanced"
+        customUpload="true"
+        multiple="false" 
+        chooseLabel="Dosya Seç" 
+        chooseIcon="pi pi-upload"
+        uploadLabel="Yükle"
+        cancelLabel="İptal"
+        name="demo[]" 
+        accept=".xlsx,.xls"
+        maxFileSize="1000000" 
+        removeStyleClass="hidden"
+        [showCancelButton]="!uploadDisable"
+        [showUploadButton]="!uploadDisable"
+        (uploadHandler)="uploadHandler($event)"/>
+    </div>
+</div>
+
+
