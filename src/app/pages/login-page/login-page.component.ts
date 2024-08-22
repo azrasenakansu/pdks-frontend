@@ -1,5 +1,5 @@
 /* eslint-disable @angular-eslint/component-selector */
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -23,10 +23,11 @@ import { PopupService } from '../../services/popup.service';
   styleUrl: './login-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageComponent {
+export class LoginPageComponent{
   private router: Router = inject(Router);
   private authService: AuthService = inject(AuthService);
   private popupService: PopupService = inject(PopupService);
+
   username = '';
   password = '';
 

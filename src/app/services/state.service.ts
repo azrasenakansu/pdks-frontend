@@ -6,6 +6,7 @@ import { Role } from '../models/common/role';
 })
 export class StateService {
   $token = signal<string | null>(null);
-  $currentUser = signal<string | null>(null);
-  $currentRole = signal<Role | null>(null);
+  $tckn = signal<string | null>(null);
+  $name = signal<string | null>(null);
+  $role = signal<Role | null>(null);
 }

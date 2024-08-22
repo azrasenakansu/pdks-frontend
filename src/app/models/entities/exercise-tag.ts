@@ -1,6 +1,4 @@
-import { IEntity } from "./ientity";
-
-export interface ExerciseTag extends IEntity {
+export interface ExerciseTag {
     name: string;
     description: string;
     color: string;

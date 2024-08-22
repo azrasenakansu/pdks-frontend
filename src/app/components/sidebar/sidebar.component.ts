@@ -19,7 +19,7 @@ export class SidebarComponent{
   state = inject(StateService);
   currentPath = signal(this.router.url);
   availableMenus = computed(() => {
-    const permissions = this.state.$currentRole();
+    const permissions = this.state.$role();
     if(permissions === undefined){
       return [];
     }

@@ -20,9 +20,10 @@ export class AuthService extends ApiService {
 
   logout(){
     this.state.$token.set(null);
-    this.storage.removeItem('token');
-    this.state.$currentUser.set(null);
-    this.state.$currentRole.set(null);
+    this.storage.clear();
+    this.state.$tckn.set(null);
+    this.state.$name.set(null);
+    this.state.$role.set(null);
   }
 
   async loadState(){
@@ -31,9 +32,10 @@ export class AuthService extends ApiService {
     }
     const decoded = jwtDecode(this.state.$token()!)
     if(decoded.sub !== undefined && decoded.sub !== null){
-      this.state.$currentUser.set(decoded.sub);
-      this.state.$currentRole.set(Role.ADMIN);
+      this.state.$tckn.set(decoded.sub);
     }
+    this.state.$name.set(this.storage.getItem("name"));
+    this.state.$role.set(this.storage.getItem("role") === "ADMIN" ? Role.ADMIN : Role.USER);
   }
 
   async login(username: string, password: string): Promise<boolean> {
@@ -49,8 +51,13 @@ export class AuthService extends ApiService {
     }
 
     this.state.$token.set(authResponse.token);
-    this.state.$currentUser.set(authResponse.tckn);
+    this.state.$tckn.set(authResponse.tckn);
+    this.state.$name.set(authResponse.fullName);
+    this.state.$role.set(authResponse.role.authority === "ADMIN" ? Role.ADMIN : Role.USER);
     this.storage.setItem('token', authResponse.token);
+    this.storage.setItem('tckn', authResponse.tckn);
+    this.storage.setItem('name', authResponse.fullName);
+    this.storage.setItem('role', authResponse.role.authority);
     return true;
   }
 }
