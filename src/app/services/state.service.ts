@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Role } from '../models/common/role';
+import { Role } from '../models/entities/role';
 
 @Injectable({
   providedIn: 'root'

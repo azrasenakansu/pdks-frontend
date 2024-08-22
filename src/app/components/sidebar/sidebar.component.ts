@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, computed
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { MenuItem, menuItems } from '../../models/common/menu-item';
-import { Role } from '../../models/common/role';
+import { RoleEnum } from '../../models/common/role-enum';
 import { NavigationEnd, Router } from '@angular/router';
 import { StateService } from '../../services/state.service';
 
@@ -23,8 +23,9 @@ export class SidebarComponent{
     if(permissions === undefined){
       return [];
     }
+    const roleEnum = permissions?.authority === "ADMIN" ? RoleEnum.ADMIN : RoleEnum.USER;
     return menuItems.filter((q) =>
-      q.isAvailable(permissions!),
+      q.isAvailable(roleEnum!),
     );
   });
 

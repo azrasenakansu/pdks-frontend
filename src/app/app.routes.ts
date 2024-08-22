@@ -4,7 +4,7 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 import { ExerciseTagPageComponent } from './pages/exercise-tag-page/exercise-tag-page.component';
-import { UploadComponent } from './pages/upload-page/upload-page.component';
+import { UploadPageComponent } from './pages/upload-page/upload-page.component';
 
 export const appRoutes: Route[] = [
     {
@@ -19,7 +19,7 @@ export const appRoutes: Route[] = [
     },
     {
       path: 'import-pdks',
-      component: UploadComponent,
+      component: UploadPageComponent,
       canActivate: [authGuard]
     },
     {

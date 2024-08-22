@@ -5,7 +5,6 @@ import { AuthResponse } from '../models/entities/auth-response';
 import { LocalStorageService } from './local-storage.service';
 import { StateService } from './state.service';
 import { jwtDecode } from "jwt-decode";
-import { Role } from '../models/common/role';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +34,7 @@ export class AuthService extends ApiService {
       this.state.$tckn.set(decoded.sub);
     }
     this.state.$name.set(this.storage.getItem("name"));
-    this.state.$role.set(this.storage.getItem("role") === "ADMIN" ? Role.ADMIN : Role.USER);
+    this.state.$role.set(JSON.parse(this.storage.getItem("role")!));
   }
 
   async login(username: string, password: string): Promise<boolean> {
@@ -53,11 +52,11 @@ export class AuthService extends ApiService {
     this.state.$token.set(authResponse.token);
     this.state.$tckn.set(authResponse.tckn);
     this.state.$name.set(authResponse.fullName);
-    this.state.$role.set(authResponse.role.authority === "ADMIN" ? Role.ADMIN : Role.USER);
+    this.state.$role.set(authResponse.role);
     this.storage.setItem('token', authResponse.token);
     this.storage.setItem('tckn', authResponse.tckn);
     this.storage.setItem('name', authResponse.fullName);
-    this.storage.setItem('role', authResponse.role.authority);
+    this.storage.setItem('role', JSON.stringify(authResponse.role));
     return true;
   }
 }

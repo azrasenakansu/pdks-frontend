@@ -9,6 +9,7 @@ import { ExerciseTagComponent } from '../../components/exercise-tag/exercise-tag
 import { ButtonModule } from 'primeng/button';
 import { Table, TableModule } from 'primeng/table';
 import { StateService } from '../../services/state.service';
+import { AdminUsersListComponent } from '../../components/user-component/user-component';
 
 @Component({
   selector: 'pdks-exercise-tag-page',
@@ -54,7 +55,7 @@ export class ExerciseTagPageComponent implements OnInit {
   }
 
   showDialog(item: ExerciseTag | null) {
-    this.ref = this.dialogService.open(ExerciseTagComponent, {
+    this.ref = this.dialogService.open(AdminUsersListComponent, {
       header: item === null ? 'Etiket Oluştur' : 'Etiket Düzenle',
       data: item,
       width: '60%',

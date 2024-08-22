@@ -10,7 +10,7 @@ import { ImportService } from '../../services/import.service';
   templateUrl: './upload-page.component.html',
   styleUrl: './upload-page.component.css'
 })
-export class UploadComponent {
+export class UploadPageComponent {
   private service = inject(ImportService);
   private popupService = inject(PopupService);
   uploadDisable = false;

@@ -1,0 +1,30 @@
+<div class="w-full h-full flex flex-col space-y-4">
+    <div class="grid grid-cols-4 gap-4">
+        <div class="flex flex-col col-span-2 space-y-2">
+            <label class="text-sm" for="name">Kullanıcı Tc Kimlik No</label>
+            <input class="m-0" pInputText id="tckn" [(ngModel)]="value.tckn" />
+        </div>
+        <div class="flex flex-col space-y-2">
+            <label class="text-sm" for="description">Ad Soyad</label>
+            <input class="m-0" pInputText id="description" [(ngModel)]="value.name" />
+        </div>
+        <div class="flex flex-col space-y-2">
+            <label class="text-sm" for="description">Rol</label>
+            <p-dropdown [options]="roles" [(ngModel)]="selectedRole" optionLabel="Rol seçiniz" placeholder="Rol">
+                <ng-template pTemplate="selectedItem" let-selectedOption>
+                    {{selectedRole.toString()}}
+                </ng-template>
+                <ng-template let-role pTemplate="item">
+                    {{role.toString()}}
+                </ng-template>
+            </p-dropdown>            
+        </div>
+    </div>
+    
+    <div class="p-5"></div>
+
+    <div class="flex justify-end space-x-4 pt-2">
+        <p-button (onClick)="close()" label="İptal" severity="secondary" [text]="true"></p-button>
+        <p-button (onClick)="save()" label="Kaydet"></p-button>
+    </div>
+</div>
