@@ -6,7 +6,7 @@ import { UserEntity } from '../models/entities/user';
 @Injectable({
   providedIn: 'root'
 })
-export class UserEndpointService extends ApiService{
+export class UserService extends ApiService{
 
   async getAllUsers(){
     return await lastValueFrom(
@@ -35,9 +35,8 @@ export class UserEndpointService extends ApiService{
   async deleteUser(tckn: string){
     return await lastValueFrom(
       this.client.delete<never>(this.baseUrl + `user/delete/${tckn}`)
-    ); // Buraya role control eklenmeli mi? api hallediyor mu?
+    );
   }
-
 
   async updateUser(tckn: string, updatedUser: UserEntity){
     return await lastValueFrom(
