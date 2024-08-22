@@ -23,7 +23,7 @@ import { Role } from '../../models/entities/role';
 import { RoleService } from '../../services/role.service';
 
 @Component({
-  selector: 'app-admin-users-list',
+  selector: 'user-component',
   standalone: true,
   imports: [
     CommonModule,
