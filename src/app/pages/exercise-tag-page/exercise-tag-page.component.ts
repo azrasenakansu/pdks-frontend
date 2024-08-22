@@ -5,11 +5,10 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ConfirmService } from '../../services/confirm.service';
 import { Column } from '../../models/common/column';
 import { ExerciseTag } from '../../models/entities/exercise-tag';
-import { ExerciseTagComponent } from '../../components/exercise-tag/exercise-tag.component';
 import { ButtonModule } from 'primeng/button';
 import { Table, TableModule } from 'primeng/table';
 import { StateService } from '../../services/state.service';
-import { AdminUsersListComponent } from '../../components/user-component/user-component';
+import { UserComponent } from '../../components/user-component/user.component';
 
 @Component({
   selector: 'pdks-exercise-tag-page',
@@ -55,7 +54,7 @@ export class ExerciseTagPageComponent implements OnInit {
   }
 
   showDialog(item: ExerciseTag | null) {
-    this.ref = this.dialogService.open(AdminUsersListComponent, {
+    this.ref = this.dialogService.open(UserComponent, {
       header: item === null ? 'Etiket Oluştur' : 'Etiket Düzenle',
       data: item,
       width: '60%',

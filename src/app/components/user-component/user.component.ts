@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   inject,
   OnInit,
@@ -18,6 +19,8 @@ import { PopupService } from '../../services/popup.service';
 import { UserEntity } from '../../models/entities/user';
 import { DropdownModule } from 'primeng/dropdown';
 import { RoleEnum } from '../../models/common/role-enum';
+import { Role } from '../../models/entities/role';
+import { RoleService } from '../../services/role.service';
 
 @Component({
   selector: 'app-admin-users-list',
@@ -33,17 +36,16 @@ import { RoleEnum } from '../../models/common/role-enum';
   styleUrl: './user-component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminUsersListComponent implements OnInit {
+export class UserComponent implements OnInit {
   private service: UserService = inject(UserService);
   private dialogService = inject(DialogService);
   private popupService = inject(PopupService);
+  private roleService: RoleService = inject(RoleService);
+  private changeDetector: ChangeDetectorRef = inject(ChangeDetectorRef);
   instance: DynamicDialogComponent | undefined;
   value: UserEntity = {} as UserEntity;
 
-  roles: RoleEnum[] | undefined;
-  userRole: RoleEnum | undefined;
-
-  selectedRole: RoleEnum = RoleEnum.USER;
+  roles: Role[] = [];
   isUpdate = false;
 
   constructor(public ref: DynamicDialogRef) {
@@ -56,12 +58,18 @@ export class AdminUsersListComponent implements OnInit {
       const user = this.instance?.data as UserEntity;
       this.value = user;
     }
-    
-    this.roles = [
-      
-      RoleEnum.USER,
-      RoleEnum.ADMIN
-    ];
+    this.fetch();
+  }
+
+  async fetch(){
+    this.roles = await this.roleService.getRoles();    
+    if(!this.isUpdate){
+      const userRoleIndex = this.roles.findIndex(role => role.authority === "USER");
+      if(userRoleIndex !== -1){
+        this.value.role = this.roles.at(userRoleIndex)!;
+      }
+    }
+    this.changeDetector.detectChanges();
   }
 
   close(result = false) {
