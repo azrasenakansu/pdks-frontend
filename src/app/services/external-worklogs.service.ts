@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { lastValueFrom } from 'rxjs';
-import { Worklog } from '../models/entities/worklog-entity';
+import { Worklog } from '../models/entities/worklog';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +26,10 @@ export class ExternalWorklogsService extends ApiService{
     );
   }
 
-  async approveExternalWorklog(id: string, approvedWorklog: Worklog){
+  async approveExternalWorklog(id: number, state: boolean | null){
+    const stateParam = state === null ? 2 : state === true ? 1 : 0;
     return await lastValueFrom(
-      this.client.patch<never>(this.baseUrl + `externalWorklogs/${id}`,approvedWorklog)
+      this.client.patch<never>(this.baseUrl + `externalWorklogs/approve/${id}/${stateParam}`, null)
     );
   }
 
