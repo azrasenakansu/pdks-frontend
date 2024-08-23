@@ -5,8 +5,8 @@ export interface ExternalWorklog {
   id?: number;
   userTckn: string;
   date: Date;
-  from: Time;
-  to: Time;
+  from: string;
+  to: string;
   isApproved: boolean|null;
   type: ExternalWorklogType;
   description?: string;

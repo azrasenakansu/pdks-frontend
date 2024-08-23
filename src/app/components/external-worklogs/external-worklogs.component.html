@@ -1,0 +1,55 @@
+<div class="w-full h-full flex flex-col space-y-4">
+    <div class="grid grid-cols-4 gap-4">
+        <div class="flex flex-col space-y-2">
+            <label class="text-sm" for="type">Ek Çalışma Tipi</label>
+            <p-dropdown  [style]="{'width':'100%'}" [options]="worklogTypes" [(ngModel)]="selectedWorklogType" optionLabel="value" placeholder="Tip Seçiniz" />
+        </div>
+        <div class="flex flex-col space-y-2">
+            <label class="text-sm" for="date">Ek Çalışma Tarihi</label>
+            <!-- <input class="m-0" pInputText id="date" [(ngModel)]="value.date" /> -->
+            <p-calendar
+            [(ngModel)]="startDate"
+            [readonlyInput]="true"
+            dateFormat="dd/mm/yy"
+            [firstDayOfWeek]="1"
+            [style]="{'width':'100%'}"
+            />
+        </div>
+        <div class="flex flex-col space-y-2">
+            <label class="text-sm" for="from">Başlangıç Saati</label>
+            <!-- <input class="m-0" pInputText id="from" [(ngModel)]="value.from" /> -->
+            <p-calendar
+            [(ngModel)]="startTime"
+            [style]="{'width':'100%'}"
+            [timeOnly]="true"
+            [readonlyInput]="true"
+            hourFormat="24"
+            /> 
+        </div>
+        <div class="flex flex-col space-y-2">
+            <label class="text-sm" for="to">Bitiş Saati</label>
+            <!-- <input class="m-0" pInputText id="to" [(ngModel)]="value.to" /> -->
+            <p-calendar
+            [(ngModel)]="endTime"
+            [style]="{'width':'100%'}"
+            [timeOnly]="true"
+            [readonlyInput]="true"
+            hourFormat="24"
+            /> 
+        </div>
+        <div class="flex flex-col col-span-4 space-y-2">
+            <label class="text-sm" for="description">Açıklama</label>
+            <textarea 
+            class="m-0 resize-none"
+    rows="15" [autoResize]="false"
+    pInputTextarea 
+    [(ngModel)]="value.description">
+</textarea>
+        </div>
+    </div>
+
+    <div class="flex justify-end space-x-4 pt-4">
+        <p-button (onClick)="close()" label="İptal" severity="secondary" [text]="true"></p-button>
+        <p-button (onClick)="save()" label="Kaydet"></p-button>
+    </div>
+</div>

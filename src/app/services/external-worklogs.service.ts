@@ -11,17 +11,17 @@ export class ExternalWorklogsService extends ApiService{
 
   async getExternalWorklog(){
     return await lastValueFrom(
-      this.client.get<ExternalWorklog>(this.baseUrl + '/externalWorklogs')
+      this.client.get<ExternalWorklog[]>(this.baseUrl + 'externalWorklogs')
     );
   }
 
-  async deleteExternalWorklog(id: string){
+  async deleteExternalWorklog(id: number){
     return await lastValueFrom(
       this.client.delete<never>(this.baseUrl + `externalWorklogs/${id}`)
     );
   }
 
-  async updateExternalWorklog(id: string, updatedWorklog: Worklog){
+  async updateExternalWorklog(id: number, updatedWorklog: ExternalWorklog){
     return await lastValueFrom(
       this.client.put<never>(this.baseUrl + `externalWorklogs/${id}`, updatedWorklog)
     );
@@ -34,15 +34,15 @@ export class ExternalWorklogsService extends ApiService{
     );
   }
 
-  async createExternalWorklog(newWorklog: Worklog){
+  async createExternalWorklog(newWorklog: ExternalWorklog){
     return await lastValueFrom(
-      this.client.post<never>(this.baseUrl + '/externalWorklogs/create', newWorklog)
+      this.client.post<never>(this.baseUrl + 'externalWorklogs/create', newWorklog)
     );
   }
 
   async pendingExternalWorklog(){
     return await lastValueFrom(
-      this.client.get<ExternalWorklog[]>(this.baseUrl + '/externalWorklogs/pending')
+      this.client.get<ExternalWorklog[]>(this.baseUrl + 'externalWorklogs/pending')
     );
   }
 
