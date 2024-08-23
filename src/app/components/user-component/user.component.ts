@@ -18,7 +18,6 @@ import {
 import { PopupService } from '../../services/popup.service';
 import { UserEntity } from '../../models/entities/user';
 import { DropdownModule } from 'primeng/dropdown';
-import { RoleEnum } from '../../models/common/role-enum';
 import { Role } from '../../models/entities/role';
 import { RoleService } from '../../services/role.service';
 

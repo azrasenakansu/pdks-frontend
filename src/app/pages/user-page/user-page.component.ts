@@ -15,6 +15,7 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PopupService } from '../../services/popup.service';
 
 @Component({
   selector: 'user-page',
@@ -24,11 +25,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminUsersListPageComponent {
+export class UserPageComponent {
   private state: StateService = inject(StateService);
   private service: UserService = inject(UserService);
   private dialogService: DialogService = inject(DialogService);
   private confirmService: ConfirmService = inject(ConfirmService);
+  private popupService = inject(PopupService);
   ref: DynamicDialogRef | undefined;
   cols!: Column[];
   data = signal<UserEntity[]>([]);
@@ -38,13 +40,15 @@ export class AdminUsersListPageComponent {
       { field: 'tckn', header: 'TC Kimlik Numarası' },
       { field: 'name', header: 'Adı Soyadı' },
       { field: 'email', header: 'Email' },
+      { field: 'role.authority', header: 'Rol' },
+      { field: 'operations', header: 'Eylemler' },
     ];
     this.load();
   }
 
   async load() {
-    const datas = await this.service.getAllUsers;
-    this.data.apply(datas);
+    const datas = await this.service.getAllUsers();
+    this.data.set(datas);
   }
 
   async delete(tckn: string) {
@@ -58,6 +62,7 @@ export class AdminUsersListPageComponent {
     ) {
       await this.service.deleteUser(tckn);
       this.load();
+      this.popupService.success('Kullanıcı başarıyla silindi.');
     }
   }
 

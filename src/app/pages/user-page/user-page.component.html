@@ -17,17 +17,17 @@
         <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
                 <td *ngFor="let col of columns">
-                    @if(col.field === 'operations') {
-                    <div class="flex">
-                        <p-button [rounded]="true" [text]="true" (onClick)="showDialog(rowData)"
-                            icon="pi pi-pencil"></p-button>
-                        <p-button [rounded]="true" [text]="true" (onClick)="delete(rowData._id)"
-                            icon="pi pi-trash"></p-button>
-                    </div>
-                    }
-                    @else {
-                    {{ rowData[col.field] }}
-                    }
+                    <ng-container *ngIf="col.field === 'operations'; else dataTemplate">
+                        <div class="flex">
+                            <p-button [rounded]="true" [text]="true" (onClick)="showDialog(rowData)"
+                                icon="pi pi-pencil"></p-button>
+                            <p-button [rounded]="true" [text]="true" (onClick)="delete(rowData.tckn)"
+                                icon="pi pi-trash"></p-button>
+                        </div>
+                    </ng-container>
+                    <ng-template #dataTemplate>
+                        {{ col.field === 'role.authority' ? rowData.role.authority : rowData[col.field] }}
+                    </ng-template>
                 </td>
             </tr>
         </ng-template>

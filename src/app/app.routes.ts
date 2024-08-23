@@ -3,8 +3,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
-import { ExerciseTagPageComponent } from './pages/exercise-tag-page/exercise-tag-page.component';
 import { UploadPageComponent } from './pages/upload-page/upload-page.component';
+import { UserPageComponent } from './pages/user-page/user-page.component';
 
 export const appRoutes: Route[] = [
     {
@@ -28,8 +28,8 @@ export const appRoutes: Route[] = [
       canActivate: [loginGuard]
     },
     {
-      path: 'exercise-tags',
-      component: ExerciseTagPageComponent,
+      path: 'user-page',
+      component: UserPageComponent,
       canActivate: [authGuard]
     },
   ];
