@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { lastValueFrom } from 'rxjs';
 import { Worklog } from '../models/entities/worklog';
+import { ExternalWorklog } from '../models/entities/externalWorklog';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class ExternalWorklogsService extends ApiService{
 
   async getExternalWorklog(){
     return await lastValueFrom(
-      this.client.get<Worklog>(this.baseUrl + '/externalWorklogs')
+      this.client.get<ExternalWorklog>(this.baseUrl + '/externalWorklogs')
     );
   }
 
@@ -41,7 +42,7 @@ export class ExternalWorklogsService extends ApiService{
 
   async pendingExternalWorklog(){
     return await lastValueFrom(
-      this.client.get<Worklog>(this.baseUrl + '/externalWorklogs/pending')
+      this.client.get<ExternalWorklog[]>(this.baseUrl + '/externalWorklogs/pending')
     );
   }
 
