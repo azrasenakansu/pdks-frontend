@@ -74,6 +74,7 @@ export class ExternalWorklogsComponent implements OnInit {
       const external = this.instance?.data as ExternalWorklog;
       this.value = external;
     }
+    
   }
 
   close(result = false) {
@@ -81,10 +82,11 @@ export class ExternalWorklogsComponent implements OnInit {
   }
 
   async save() {
-    if(this.startTime === undefined || this.endTime === undefined ||this.startTime === null || this.endTime === null){
+    if(this.startTime === undefined || this.endTime === undefined ||this.startTime === null || this.endTime === null||this.startDate === null||this.startDate === undefined){
       this.popupService.warning("Başlangıç - Bitiş Saatleri Boş Bırakılamaz");
       return;
     }
+    this.value.date = new Date(this.startDate);
     this.value.type = stringValueToWorklogTypeEnum(this.selectedWorklogType);
     this.value.from = formatDate(this.startTime,'HH:mm', "en-US");
     this.value.to = formatDate(this.endTime,'HH:mm', "en-US");

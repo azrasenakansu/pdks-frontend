@@ -20,22 +20,36 @@
                 <td *ngFor="let col of columns">
                     @if(col.field === 'operations'){
                     <div class="flex">
-                        <p-button [rounded]="true" [text]="true" (onClick)="showDialog(rowData)"
+                        <p-button [disabled]="rowData.isApproved !== null" [rounded]="true" [text]="true" (onClick)="showDialog(rowData)"
                             icon="pi pi-pencil"></p-button>
-                        <p-button [rounded]="true" [text]="true" (onClick)="delete(rowData.tckn)"
+                        <p-button [disabled]="rowData.isApproved !== null" [rounded]="true" [text]="true" (onClick)="delete(rowData.id)"
                             icon="pi pi-trash"></p-button>
                     </div>
                     }@else if (col.field === "hours") {
                     {{rowData.from}} - {{rowData.to}}
+                    }@else if (col.field === "date") {
+                    {{rowData.date | date: 'dd/MM/yyyy'}}
+                    }@else if (col.field === "tckn") {
+                    {{rowData.user.tckn}}
+                    }@else if (col.field === "isApproved") {
+                        @switch (rowData.isApproved) {
+                        @case (true) { 
+                            <span class="w-28 text-center block rounded-md bg-green-500 text-white p-3 font-semibold">Onaylandı</span>
+                        }
+                        @case (false) { 
+                            <span class="w-28 text-center block rounded-md bg-red-500 text-white p-3 font-semibold">Reddedildi</span>
+                        }
+                        @default {
+                            <span class="w-28 text-center block rounded-md bg-slate-400 text-white p-3 font-semibold">Bekliyor</span>
+                        }
+                        }
+                    }
+                    @else if(col.field === "type"){
+                        {{stringifyType(rowData[col.field])}}
                     }
                     @else {
                     {{ rowData[col.field] }}
                     }
-                    <!-- <ng-container *ngIf="col.field === 'operations'; else dataTemplate">
-                    </ng-container>
-                    <ng-template #dataTemplate>
-                        {{ col.field === 'role.authority' ? rowData.role.authority : rowData[col.field] }}
-                    </ng-template> -->
                 </td>
             </tr>
         </ng-template>

@@ -15,6 +15,7 @@ import { PopupService } from '../../services/popup.service';
 import { Column } from '../../models/common/column';
 import { ExternalWorklog } from '../../models/entities/externalWorklog';
 import { ExternalWorklogsComponent } from '../../components/external-worklogs/external-worklogs.component';
+import { ExternalWorklogType, externalWorklogTypeFromValue, externalWorklogTypeToString } from '../../models/common/externalworklog-enum';
 
 @Component({
   selector: 'app-external-worklogs-page',
@@ -32,22 +33,26 @@ export class ExternalWorklogsPageComponent {
   private popupService = inject(PopupService);
   ref: DynamicDialogRef | undefined;
   cols!: Column[];
-  enumToStringList = signal<string[]>([]);
+  //enumToStringList = signal<string[]>([]);
   data = signal<ExternalWorklog[]>([]);
 
   ngOnInit() {
     this.cols = [
-      { field: 'userTckn', header: 'TC Kimlik Numarası' },
+      { field: 'tckn', header: 'TC Kimlik Numarası' },
       { field: 'date', header: 'Tarih' },
       { field: 'hours', header: 'Başlangıç - Bitiş Saati' },
       { field: 'description', header: 'Açıklama' },
-      { field: 'enumToStringList', header: 'Çalışma Tipi' },
-      //{ field: 'isApproved', header: 'Onay Durumu' },
+      { field: 'type', header: 'Çalışma Tipi' },
+      { field: 'isApproved', header: 'Onay Durumu' },
       { field: 'operations', header: 'Eylemler' },
     ];
-    this.enumToStringList.set(['OTHER', 'HYBRID', 'ASELSAN']); // Set the enum string list
+    //this.enumToStringList.set(['OTHER', 'HYBRID', 'ASELSAN']); 
 
     this.load();
+  }
+
+  stringifyType(value: ExternalWorklogType | null | undefined) : string{
+    return externalWorklogTypeToString(value);
   }
 
   async load() {
@@ -69,6 +74,7 @@ export class ExternalWorklogsPageComponent {
       this.popupService.success('Çalışma Kaydı başarıyla silindi.');
     }
   }
+
   showDialog(item: ExternalWorklog | null) {
     this.ref = this.dialogService.open(ExternalWorklogsComponent, {
       header: item === null ? 'Ek Çalışma Oluştur' : 'Ek Çalışma Düzenle',
@@ -90,5 +96,5 @@ export class ExternalWorklogsPageComponent {
     await this.service.approveExternalWorklog(id, state);
     this.load();
     this.popupService.success('Çalışma Kaydı başarıyla onaylandı.');
-}
+  }
 }
