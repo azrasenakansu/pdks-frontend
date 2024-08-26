@@ -19,7 +19,12 @@ import {
 } from 'primeng/dynamicdialog';
 import { PopupService } from '../../services/popup.service';
 import { ExternalWorklog } from '../../models/entities/externalWorklog';
-import { ExternalWorklogType, externalWorklogTypeToString } from '../../models/common/externalworklog-enum';
+import {
+  ExternalWorklogType,
+  externalWorklogTypeToString,
+} from '../../models/common/externalworklog-enum';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmService } from '../../services/confirm.service';
 
 @Component({
   selector: 'app-approve-external-worklog',
@@ -41,6 +46,7 @@ export class ApproveExternalWorklogComponent implements OnInit {
   private service: ExternalWorklogsService = inject(ExternalWorklogsService);
   private dialogService = inject(DialogService);
   private popupService = inject(PopupService);
+  private confirmationService = inject(ConfirmationService);
   instance: DynamicDialogComponent | undefined;
   value: ExternalWorklog = {} as ExternalWorklog;
   //isApproved: boolean | null = null;
@@ -58,19 +64,49 @@ export class ApproveExternalWorklogComponent implements OnInit {
   }
 
   async approve(option: boolean | null) {
-    await this.service.approveExternalWorklog(this.value.id!, option);
+    //await this.service.approveExternalWorklog(this.value.id!, option);
 
     if (option) {
-      this.popupService.success('Ek çalışma başarıyla onaylandı.');
+      await this.confirmationService.confirm({
+        message: 'Onaylamak istediğinize emin miziniz?',
+        header: 'Onaylanıyor',
+        acceptButtonStyleClass: 'p-button-success',
+        rejectButtonStyleClass: 'p-button-secondary',
+
+        accept: () => {
+          this.service.approveExternalWorklog(this.value.id!, option);
+          this.popupService.success('Ek çalışma başarıyla onaylandı.');
+        },
+      });
     } else if (option === null) {
-      this.popupService.success('Ek çalışma başarıyla beklemeye alındı.');
+      await this.confirmationService.confirm({
+        message: 'Beklemeye almak istediğinize emin miziniz?',
+        header: 'Beklemeye Alınıyor',
+        acceptButtonStyleClass: 'p-button-success',
+        rejectButtonStyleClass: 'p-button-secondary',
+
+        accept: () => {
+          this.service.approveExternalWorklog(this.value.id!, option);
+          this.popupService.success('Ek çalışma başarıyla beklemeye alındı.');
+        },
+      });
     } else {
-      this.popupService.success('Ek çalışma başarıyla reddedildi.');
+      await this.confirmationService.confirm({
+        message: 'Reddetmek istediğinize emin miziniz?',
+        header: 'Reddediliyor',
+        acceptButtonStyleClass: 'p-button-danger',
+        rejectButtonStyleClass: 'p-button-secondary',
+
+        accept: () => {
+          this.service.approveExternalWorklog(this.value.id!, option);
+          this.popupService.success('Ek çalışma başarıyla reddedildi.');
+        },
+      });
     }
     this.close(true);
   }
-  
-  stringifyType(value: ExternalWorklogType | null | undefined) : string{
+
+  stringifyType(value: ExternalWorklogType | null | undefined): string {
     return externalWorklogTypeToString(value);
   }
 
