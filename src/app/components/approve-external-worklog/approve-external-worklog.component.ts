@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   inject,
   OnInit,
+  Output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -46,7 +48,7 @@ export class ApproveExternalWorklogComponent implements OnInit {
   private service: ExternalWorklogsService = inject(ExternalWorklogsService);
   private dialogService = inject(DialogService);
   private popupService = inject(PopupService);
-  private confirmationService = inject(ConfirmationService);
+  private confirmService = inject(ConfirmService);
   instance: DynamicDialogComponent | undefined;
   value: ExternalWorklog = {} as ExternalWorklog;
   //isApproved: boolean | null = null;
@@ -65,45 +67,36 @@ export class ApproveExternalWorklogComponent implements OnInit {
 
   async approve(option: boolean | null) {
     //await this.service.approveExternalWorklog(this.value.id!, option);
+    let messagePrefix = "prefix";
+    let header = "header";
+    let acceptType = "secondary";
 
-    if (option) {
-      await this.confirmationService.confirm({
-        message: 'Onaylamak istediğinize emin miziniz?',
-        header: 'Onaylanıyor',
-        acceptButtonStyleClass: 'p-button-success',
-        rejectButtonStyleClass: 'p-button-secondary',
-
-        accept: () => {
-          this.service.approveExternalWorklog(this.value.id!, option);
-          this.popupService.success('Ek çalışma başarıyla onaylandı.');
-        },
-      });
-    } else if (option === null) {
-      await this.confirmationService.confirm({
-        message: 'Beklemeye almak istediğinize emin miziniz?',
-        header: 'Beklemeye Alınıyor',
-        acceptButtonStyleClass: 'p-button-success',
-        rejectButtonStyleClass: 'p-button-secondary',
-
-        accept: () => {
-          this.service.approveExternalWorklog(this.value.id!, option);
-          this.popupService.success('Ek çalışma başarıyla beklemeye alındı.');
-        },
-      });
-    } else {
-      await this.confirmationService.confirm({
-        message: 'Reddetmek istediğinize emin miziniz?',
-        header: 'Reddediliyor',
-        acceptButtonStyleClass: 'p-button-danger',
-        rejectButtonStyleClass: 'p-button-secondary',
-
-        accept: () => {
-          this.service.approveExternalWorklog(this.value.id!, option);
-          this.popupService.success('Ek çalışma başarıyla reddedildi.');
-        },
-      });
+    if(option){
+      messagePrefix = "Onaylamak"
+      header = "Onaylanıyor";
+      acceptType = "success";
     }
-    this.close(true);
+    else if(option === null){
+      messagePrefix = 'Beklemeye almak';
+      header = 'Beklemeye Alınıyor';
+      acceptType = 'warning';
+    }
+    else{
+      messagePrefix = 'Reddetmek';
+      header = 'Reddediliyor';
+      acceptType = 'danger';
+    }
+
+    if(await this.confirmService.confirm({
+      message: messagePrefix + ' istediğinize emin miziniz?',
+      header: header,
+      acceptStyle: 'p-button-' + acceptType,
+      rejectStyle: 'p-button-secondary',
+    })){
+        await this.service.approveExternalWorklog(this.value.id!, option);
+        this.popupService.success('İşlem başarıyla tamamlandı.');
+        this.close(true);
+    }
   }
 
   stringifyType(value: ExternalWorklogType | null | undefined): string {

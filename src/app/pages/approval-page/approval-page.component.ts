@@ -36,7 +36,8 @@ export class ApprovalPageComponent {
   private dialogService: DialogService = inject(DialogService);
   private confirmService: ConfirmService = inject(ConfirmService);
   private popupService: PopupService = inject(PopupService);
-  ref: DynamicDialogRef | undefined;
+  crudRef: DynamicDialogRef | undefined;
+  approveRef: DynamicDialogRef | undefined;
   cols!: Column[];
   data = signal<ExternalWorklog[]>([]);
 
@@ -79,7 +80,7 @@ export class ApprovalPageComponent {
   }
 
   showDialog(item: ExternalWorklog | null) {
-    this.ref = this.dialogService.open(ExternalWorklogsComponent, {
+    this.crudRef = this.dialogService.open(ExternalWorklogsComponent, {
       header: item === null ? 'Ek Çalışma Oluştur' : 'Ek Çalışma Düzenle',
       data: item,
       width: '60%',
@@ -88,7 +89,7 @@ export class ApprovalPageComponent {
       maximizable: true,
     });
 
-    this.ref.onClose.subscribe((result: boolean) => {
+    this.crudRef.onClose.subscribe((result: boolean) => {
       if (result) {
         this.load();
       }
@@ -96,20 +97,18 @@ export class ApprovalPageComponent {
   }
 
   approveDialog(item: ExternalWorklog | null) {
-    this.ref = this.dialogService.open(ApproveExternalWorklogComponent, {
-      header:'Onaylama İşlemi',
+    this.approveRef = this.dialogService.open(ApproveExternalWorklogComponent, {
+      header: 'Onaylama İşlemi',
       data: item,
       width: '60%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: true,
     });
-    this.ref.onClose.subscribe((result: boolean) => {
+    this.approveRef.onClose.subscribe((result: boolean) => {
       if (result) {
         this.load();
       }
     });
   }
-
-
 }

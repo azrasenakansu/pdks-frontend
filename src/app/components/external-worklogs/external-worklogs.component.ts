@@ -52,7 +52,7 @@ export class ExternalWorklogsComponent implements OnInit {
 
   worklogTypes: StringValue[] | undefined;
   selectedWorklogType: StringValue | undefined;
-  
+
   startDate: Date | undefined = new Date();
   startTime: Date | undefined;
   endTime: Date | undefined;
@@ -65,7 +65,7 @@ export class ExternalWorklogsComponent implements OnInit {
     this.instance = this.dialogService.getInstance(this.ref);
   }
   ngOnInit(): void {
-    
+
     this.worklogTypes = [{value:"Diğer"},{value:"Hybrid"},{value:"Aselsan"}];
     const now = new Date();
     this.startTime = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 9, 0, 0);
@@ -75,7 +75,7 @@ export class ExternalWorklogsComponent implements OnInit {
       const external = this.instance?.data as ExternalWorklog;
       this.value = external;
     }
-    
+
   }
 
   close(result = false) {
@@ -95,9 +95,6 @@ export class ExternalWorklogsComponent implements OnInit {
       await this.service.createExternalWorklog(this.value);
     } else {
       await this.service.updateExternalWorklog(this.value.id!, this.value);
-    }
-    if(!this.isApprove){
-      await this.service.approveExternalWorklog(this.value.id!,this.value.isApproved);
     }
     this.popupService.success('Ek Çalışma başarıyla kaydedildi.');
     this.close(true);
