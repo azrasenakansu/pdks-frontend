@@ -7,6 +7,15 @@
         <!-- <p-button label="Ek Çalışma Oluştur" [outlined]="true" icon="pi pi-plus"
             (onClick)="showDialog(null)"></p-button> -->
     </div>
+    <div class="flex space-x-4">
+        <p-radioButton name="statusFilter" value="pending" [(ngModel)]="selectedFilter" label="Beklemede"
+            (onClick)="load()"></p-radioButton>
+
+        <p-radioButton name="statusFilter" value="approved" [(ngModel)]="selectedFilter" label="Onaylandı"
+            (onClick)="load()"></p-radioButton>
+        <p-radioButton name="statusFilter" value="rejected" [(ngModel)]="selectedFilter" label="Reddedildi"
+            (onClick)="load()"></p-radioButton>
+    </div>
     <p-table class="h-full" [columns]="cols" [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header" let-columns>
             <tr>
@@ -20,9 +29,9 @@
                 <td *ngFor="let col of columns">
                     @if(col.field === 'operations'){
                     <div class="flex">
-                        <p-button [disabled]="rowData.isApproved !== null" [rounded]="true" [text]="true" (onClick)="showDialog(rowData)"
+                        <p-button [rounded]="true" [text]="true" (onClick)="showDialog(rowData)"
                             icon="pi pi-pencil"></p-button>
-                        <p-button [disabled]="rowData.isApproved !== null" [rounded]="true" [text]="true" (onClick)="delete(rowData.id)"
+                        <p-button [rounded]="true" [text]="true" (onClick)="delete(rowData.id)"
                             icon="pi pi-trash"></p-button>
                     </div>
                     }@else if (col.field === "hours") {
@@ -32,25 +41,31 @@
                     }@else if (col.field === "tckn") {
                     {{rowData.user.tckn}}
                     }@else if (col.field === "isApproved") {
-                        @switch (rowData.isApproved) {
-                        @case (true) { 
-                            <span class="w-28 text-center block rounded-md bg-green-500 text-white p-3 font-semibold">Onaylandı</span>
-                        }
-                        @case (false) { 
-                            <span class="w-28 text-center block rounded-md bg-red-500 text-white p-3 font-semibold">Reddedildi</span>
-                        }
-                        @default {
-                            <!-- <button class="w-28 text-center block rounded-md bg-slate-400 text-white p-3 font-semibold" onClick="asd()">Bekliyor</button> -->
-                            <p-button label="Bekliyor" styleClass="bg-slate-400 " (onClick)="approveDialog(rowData)" />
+                    @switch (rowData.isApproved) {
+                    @case (true) {
+                    <!-- <span 
+                        class="w-28 text-center block rounded-md bg-green-500 text-white p-3 font-semibold">Onaylandı</span>-->
+                    <p-button label="Onaylandı" styleClass="bg-green-500" (onClick)="approveDialog(rowData)" />
 
-                        }
-                        }
+                    }
+                    @case (false) {
+                    <!--  <span
+                      class="w-28 text-center block rounded-md bg-red-500 text-white p-3 font-semibold">Reddedildi</span> -->
+
+                    <p-button label="Reddedildi" styleClass="bg-red-500" (onClick)="approveDialog(rowData)" />
+                    }
+                    @default {
+                    <!-- <button class="w-28 text-center block rounded-md bg-slate-400 text-white p-3 font-semibold" onClick="asd()">Bekliyor</button> -->
+                    <p-button label="Bekliyor" styleClass="bg-slate-400 " (onClick)="approveDialog(rowData)" />
+
+                    }
+                    }
                     }
                     @else if(col.field === "type"){
-                        {{stringifyType(rowData[col.field])}}
+                    {{stringifyType(rowData[col.field])}}
                     }
-                    @else {
-                    {{ rowData[col.field] }}
+                    @else {  
+                        <span tooltipPosition="bottom"  [pTooltip]="rowData[col.field] !== null && rowData[col.field].length > 15 ? rowData[col.field] : ''" >{{ rowData[col.field] | slice:0: 15}}</span>
                     }
                 </td>
             </tr>

@@ -48,7 +48,7 @@
                         {{stringifyType(rowData[col.field])}}
                     }
                     @else {
-                    {{ rowData[col.field] }}
+                    {{ rowData[col.field] |slice:0:15}}
                     }
                 </td>
             </tr>

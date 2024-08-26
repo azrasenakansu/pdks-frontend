@@ -21,11 +21,15 @@ import {
   externalWorklogTypeToString,
 } from '../../models/common/externalworklog-enum';
 import { ApproveExternalWorklogComponent } from '../../components/approve-external-worklog/approve-external-worklog.component';
+import { FormsModule } from '@angular/forms';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { TooltipModule } from 'primeng/tooltip';
+
 
 @Component({
   selector: 'app-approval-page',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TableModule],
+  imports: [CommonModule, ButtonModule, TableModule, FormsModule, RadioButtonModule, TooltipModule],
   templateUrl: './approval-page.component.html',
   styleUrl: './approval-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,6 +44,7 @@ export class ApprovalPageComponent {
   approveRef: DynamicDialogRef | undefined;
   cols!: Column[];
   data = signal<ExternalWorklog[]>([]);
+  selectedFilter: string = "pending";
 
   ngOnInit() {
     this.cols = [
@@ -60,7 +65,14 @@ export class ApprovalPageComponent {
   }
 
   async load() {
-    const datas = await this.service.pendingExternalWorklog();
+    let datas: ExternalWorklog[] = [];
+      if (this.selectedFilter === 'pending') {
+        datas = await this.service.pendingExternalWorklog();
+      } else if (this.selectedFilter === 'approved') {
+        datas = await this.service.getApprovedExternalWorklog();
+      } else if (this.selectedFilter === 'rejected') {
+        datas = await this.service.rejectedExternalWorklog();
+      }
     this.data.set(datas);
   }
 
