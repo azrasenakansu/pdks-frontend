@@ -1,5 +1,4 @@
 import { ExternalWorklogType } from '../common/externalworklog-enum';
-import { Time } from '../common/time';
 
 export interface ExternalWorklog {
   id?: number;

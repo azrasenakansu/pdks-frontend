@@ -15,22 +15,27 @@ import { PopupService } from '../../services/popup.service';
 import { Column } from '../../models/common/column';
 import { ExternalWorklog } from '../../models/entities/externalWorklog';
 import { ExternalWorklogsComponent } from '../../components/external-worklogs/external-worklogs.component';
-import { ExternalWorklogType, externalWorklogTypeFromValue, externalWorklogTypeToString } from '../../models/common/externalworklog-enum';
+import {
+  ExternalWorklogType,
+  externalWorklogTypeFromValue,
+  externalWorklogTypeToString,
+} from '../../models/common/externalworklog-enum';
+import { ApproveExternalWorklogComponent } from '../../components/approve-external-worklog/approve-external-worklog.component';
 
 @Component({
-  selector: 'app-external-worklogs-page',
+  selector: 'app-approval-page',
   standalone: true,
   imports: [CommonModule, ButtonModule, TableModule],
-  templateUrl: './external-worklogs-page.component.html',
-  styleUrl: './external-worklogs-page.component.css',
+  templateUrl: './approval-page.component.html',
+  styleUrl: './approval-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExternalWorklogsPageComponent {
+export class ApprovalPageComponent {
   private state: StateService = inject(StateService);
   private service: ExternalWorklogsService = inject(ExternalWorklogsService);
   private dialogService: DialogService = inject(DialogService);
   private confirmService: ConfirmService = inject(ConfirmService);
-  private popupService = inject(PopupService);
+  private popupService: PopupService = inject(PopupService);
   ref: DynamicDialogRef | undefined;
   cols!: Column[];
   data = signal<ExternalWorklog[]>([]);
@@ -49,12 +54,12 @@ export class ExternalWorklogsPageComponent {
     this.load();
   }
 
-  stringifyType(value: ExternalWorklogType | null | undefined) : string{
+  stringifyType(value: ExternalWorklogType | null | undefined): string {
     return externalWorklogTypeToString(value);
   }
 
   async load() {
-    const datas = await this.service.getExternalWorklog();
+    const datas = await this.service.pendingExternalWorklog();
     this.data.set(datas);
   }
 
@@ -83,6 +88,22 @@ export class ExternalWorklogsPageComponent {
       maximizable: true,
     });
 
+    this.ref.onClose.subscribe((result: boolean) => {
+      if (result) {
+        this.load();
+      }
+    });
+  }
+
+  approveDialog(item: ExternalWorklog | null) {
+    this.ref = this.dialogService.open(ApproveExternalWorklogComponent, {
+      header:'Onaylama İşlemi',
+      data: item,
+      width: '60%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+    });
     this.ref.onClose.subscribe((result: boolean) => {
       if (result) {
         this.load();

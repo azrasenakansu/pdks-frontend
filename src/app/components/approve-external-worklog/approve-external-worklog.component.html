@@ -1,0 +1,43 @@
+<div class="w-full h-full flex flex-col space-y-4 p-4">
+  <!-- <h3 class="text-lg font-semibold mb-4">Onaylama İşlemi</h3>
+    <div class="flex flex-col space-y-2">
+      <label class="text-sm">Çalışma Tarihi</label>
+      <p>{{ value.date | date: 'dd/MM/yyyy' }}</p>
+    </div>
+    <div class="flex flex-col space-y-2">
+      <label class="text-sm">Açıklama</label>
+      <p>{{ value.description }}</p>
+    </div> -->
+  <div class="grid grid-cols-4 grid-rows-2">
+
+    <div class="flex flex-col">
+      <h1>Kullanıcı TC Kimlik No</h1>
+      {{value.userTckn}}
+    </div>
+    <div class="flex flex-col">
+      <h1>Tarih</h1>
+      {{value.date | date: 'dd/MM/yyyy'}}
+    </div>
+    <div class="flex flex-col">
+      <h1>Çalışma Saatleri</h1>
+      {{value.from}} - {{value.to}}
+    </div>
+    <div class="flex flex-col">
+      <h1>Çalışma Tipi</h1>
+      {{stringifyType(value.type)}}
+    </div>
+
+
+    <div class="col-span-full my">
+      <h1>Açıklama</h1>
+      {{value.description}}
+    </div>
+
+  </div>
+  <div class="flex justify-end space-x-4 pt-4">
+    <p-button (onClick)="close()" label="İptal" severity="secondary" [text]="true"></p-button>
+    <p-button (onClick)="approve(true)" label="Onayla" severity="success"></p-button>
+    <p-button (onClick)="approve(false)" label="Reddet"severity="danger"></p-button>
+    <p-button (onClick)="approve(null)" label="Beklemeye Al"severity="secondary"></p-button>
+  </div>
+</div>

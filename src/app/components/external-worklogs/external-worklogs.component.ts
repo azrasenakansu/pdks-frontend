@@ -59,6 +59,7 @@ export class ExternalWorklogsComponent implements OnInit {
 
 
   isUpdate = false;
+  isApprove=false;
 
   constructor(public ref: DynamicDialogRef) {
     this.instance = this.dialogService.getInstance(this.ref);
@@ -94,6 +95,9 @@ export class ExternalWorklogsComponent implements OnInit {
       await this.service.createExternalWorklog(this.value);
     } else {
       await this.service.updateExternalWorklog(this.value.id!, this.value);
+    }
+    if(!this.isApprove){
+      await this.service.approveExternalWorklog(this.value.id!,this.value.isApproved);
     }
     this.popupService.success('Ek Çalışma başarıyla kaydedildi.');
     this.close(true);

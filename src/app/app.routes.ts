@@ -6,6 +6,7 @@ import { loginGuard } from './guards/login.guard';
 import { UploadPageComponent } from './pages/upload-page/upload-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { ExternalWorklogsPageComponent } from './pages/external-worklogs-page/external-worklogs-page.component';
+import { ApprovalPageComponent } from './pages/approval-page/approval-page.component';
 
 export const appRoutes: Route[] = [
     {
@@ -36,6 +37,11 @@ export const appRoutes: Route[] = [
     {
       path: 'app-external-worklogs-page',
       component: ExternalWorklogsPageComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'app-approval-page',
+      component: ApprovalPageComponent,
       canActivate: [authGuard]
     },
   ];
