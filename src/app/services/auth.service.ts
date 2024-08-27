@@ -59,4 +59,13 @@ export class AuthService extends ApiService {
     this.storage.setItem('role', JSON.stringify(authResponse.role));
     return true;
   }
+
+  async changePassword(password: string, newPassword: string): Promise<void>{
+      await lastValueFrom(
+        this.client.put<never>(this.baseUrl + 'auth/changePassword', {
+          currentPassword: password,
+          newPassword: newPassword,
+        })
+      )
+  }
 }
