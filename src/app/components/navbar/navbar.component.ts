@@ -35,14 +35,14 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.items = [
       {
-        label: 'Logout',
-        icon: 'pi pi-sign-out',
-        command: () => this.logout(),
-      },
-      {
         label: 'Şifre Değiştir',
         icon: 'pi pi-lock',
         command: () => this.showDialog(),
+      },
+      {
+        label: 'Çıkış Yap',
+        icon: 'pi pi-sign-out',
+        command: () => this.logout(),
       },
     ];
   }
