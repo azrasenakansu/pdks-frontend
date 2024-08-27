@@ -24,10 +24,9 @@ export class MenuItem {
 
 export const menuItems : MenuItem[] = [
     new MenuItem("Ana Sayfa", "pi-home", "/dashboard", null),
-   // new MenuItem("Etiketler", "pi-tags", "/exercise-tags", RoleEnum.ADMIN),
     new MenuItem("Kullanıcılar", "pi pi-user", "/user-page", RoleEnum.ADMIN),
     new MenuItem("PDKS Veri Yükleme", "pi-file-arrow-up", "/import-pdks", RoleEnum.ADMIN),
     new MenuItem("Ek Çalışmalarım", "pi-book", "/app-external-worklogs-page", null),
     new MenuItem("Ek Çalışma Onayları", "pi-list-check", "/app-approval-page", RoleEnum.ADMIN),
-
+    new MenuItem("Raporum", "pi-chart-bar", "/app-report-page", null),
 ];
