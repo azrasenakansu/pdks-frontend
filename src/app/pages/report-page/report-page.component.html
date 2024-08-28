@@ -8,7 +8,7 @@
     <div class="flex justify-between w-full">
         <div class="flex">
 
-            <p-calendar [(ngModel)]="selectedMonth" view="month" dateFormat="mm/yy" readonlyInput="true" />
+            <p-calendar [(ngModel)]="selectedMonth" view="month" dateFormat="mm/yy" readonlyInput="true" styleClass="mr-5" />
             <p-multiSelect [ngClass]="!isAdmin ? 'hidden' : ''" [options]="tcknOptions()" [(ngModel)]="selectedTckns"
             placeholder="Kullanıcıları Seçin" [showClear]="true" (ngModelChange)="onTcknChange($event)"></p-multiSelect>
         </div>
