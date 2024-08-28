@@ -6,12 +6,15 @@
         </div>
     </div>
     <div class="flex justify-between w-full">
+        <div class="flex">
 
-        <p-multiSelect [ngClass]="!isAdmin ? 'hidden' : ''" [options]="tcknOptions()" [(ngModel)]="selectedTckns"
-        placeholder="Kullanıcıları Seçin" [showClear]="true" (ngModelChange)="onTcknChange($event)" ></p-multiSelect>
-        
-        <button pButton type="button" (click)="load()" label="Raporları Yükle"
-        [ngClass]="!isAdmin ? 'hidden' : ''"  styleClass="w-full"></button>
+            <p-calendar [(ngModel)]="selectedMonth" view="month" dateFormat="mm/yy" readonlyInput="true" />
+            <p-multiSelect [ngClass]="!isAdmin ? 'hidden' : ''" [options]="tcknOptions()" [(ngModel)]="selectedTckns"
+            placeholder="Kullanıcıları Seçin" [showClear]="true" (ngModelChange)="onTcknChange($event)"></p-multiSelect>
+        </div>
+
+        <button pButton type="button" (click)="load()" label="Raporları Yükle" [ngClass]="!isAdmin ? 'hidden' : ''"
+            styleClass="w-full"></button>
     </div>
 
     <p-table class="h-full" [columns]="cols" [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">

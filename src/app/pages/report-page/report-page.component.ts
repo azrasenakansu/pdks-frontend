@@ -18,11 +18,12 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { UserService } from '../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { RoleEnum } from '../../models/common/role-enum';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-report-page',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TableModule, MultiSelectModule,FormsModule],
+  imports: [CommonModule, ButtonModule, TableModule, MultiSelectModule,FormsModule,CalendarModule],
   templateUrl: './report-page.component.html',
   styleUrl: './report-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,7 +45,9 @@ export class ReportPageComponent {
   permissions = this.state.$role();
   roleEnum = this.permissions?.authority === "ADMIN" ? RoleEnum.ADMIN : RoleEnum.USER;
   isAdmin: boolean = false
-  
+  selectedMonth: Date | undefined;
+  loaded: boolean = false; 
+
   ngOnInit() {
     const now = new Date();
     this.startDate = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -60,11 +63,16 @@ export class ReportPageComponent {
     ];
     this.loadTcknOptions();
     this.load();
+    this.loaded = true;
 
     this.isAdmin = this.roleEnum===RoleEnum.ADMIN;
   }
 
   async load() {
+    if(this.loaded){
+      this.startDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth(), 1)
+      this.endDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth()+1, 0)
+    }
     const datas = await this.service.getWorklogReports(
       this.startDate,
       this.endDate,
@@ -72,6 +80,8 @@ export class ReportPageComponent {
     );
     this.data.set(datas);
   }
+
+
 
   async loadTcknOptions() {
     const tckns = await this.userService.getAllTckns();
