@@ -5,6 +5,15 @@
             <p class="m-0">Sistemde bulunan bütün çalışma saatlerine buradan ulaşabilirsiniz.</p>
         </div>
     </div>
+    <div class="flex justify-between w-full">
+
+        <p-multiSelect [ngClass]="!isAdmin ? 'hidden' : ''" [options]="tcknOptions()" [(ngModel)]="selectedTckns"
+        placeholder="Kullanıcıları Seçin" [showClear]="true" (ngModelChange)="onTcknChange($event)" ></p-multiSelect>
+        
+        <button pButton type="button" (click)="load()" label="Raporları Yükle"
+        [ngClass]="!isAdmin ? 'hidden' : ''"  styleClass="w-full"></button>
+    </div>
+
     <p-table class="h-full" [columns]="cols" [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header" let-columns>
             <tr>
@@ -24,8 +33,7 @@
                     {{rowData.tckn}}
                     }
                     @else if (col.field === "total_time") {
-                        
-    
+                    {{rowData.total_time}}
                     }@else {
                     {{ rowData[col.field] |slice:0:15}}
                     }

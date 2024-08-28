@@ -28,5 +28,5 @@ export const menuItems : MenuItem[] = [
     new MenuItem("PDKS Veri Yükleme", "pi-file-arrow-up", "/import-pdks", RoleEnum.ADMIN),
     new MenuItem("Ek Çalışmalarım", "pi-book", "/app-external-worklogs-page", null),
     new MenuItem("Ek Çalışma Onayları", "pi-list-check", "/app-approval-page", RoleEnum.ADMIN),
-    new MenuItem("Raporum", "pi-chart-bar", "/app-report-page", null),
+    new MenuItem("Çalışma Raporu", "pi-chart-bar", "/app-report-page", null),
 ];

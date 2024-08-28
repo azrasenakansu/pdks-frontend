@@ -32,8 +32,9 @@ export class WorklogEndpointService extends ApiService {
       .set('endDate', formatDate(endDate,'YYYY-MM-dd','en-US'));
 
     if (tckns && tckns.length > 0) {
-      params = params.set('tckns', tckns.join(','));
-    }
+      tckns.forEach(tckn => {
+        params = params.append('tckns', tckn);
+      });    }
 
     return await lastValueFrom(
       this.client.get<WorklogReportDTO[]>(`${this.baseUrl}worklogs/report`, {

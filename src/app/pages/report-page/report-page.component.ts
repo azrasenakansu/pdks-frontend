@@ -14,11 +14,15 @@ import { PopupService } from '../../services/popup.service';
 import { StateService } from '../../services/state.service';
 import { Column } from '../../models/common/column';
 import { WorklogReportDTO } from '../../models/common/worklog-report-dto';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { UserService } from '../../services/user.service';
+import { FormsModule } from '@angular/forms';
+import { RoleEnum } from '../../models/common/role-enum';
 
 @Component({
   selector: 'app-report-page',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TableModule],
+  imports: [CommonModule, ButtonModule, TableModule, MultiSelectModule,FormsModule],
   templateUrl: './report-page.component.html',
   styleUrl: './report-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,12 +33,18 @@ export class ReportPageComponent {
   private popupService = inject(PopupService);
   private confirmService: ConfirmService = inject(ConfirmService);
   private service: WorklogEndpointService = inject(WorklogEndpointService);
+  private userService: UserService = inject(UserService);
   ref: DynamicDialogRef | undefined;
   cols!: Column[];
   data = signal<WorklogReportDTO[]>([]);
   endDate: Date = new Date();
   startDate: Date = new Date();
-
+  selectedTckns = signal<string[]>([]);
+  tcknOptions = signal<string[]>([]);
+  permissions = this.state.$role();
+  roleEnum = this.permissions?.authority === "ADMIN" ? RoleEnum.ADMIN : RoleEnum.USER;
+  isAdmin: boolean = false
+  
   ngOnInit() {
     const now = new Date();
     this.startDate = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -48,15 +58,27 @@ export class ReportPageComponent {
       { field: 'ext_descriptions', header: 'Açıklama' },
       { field: 'total_time', header: 'Toplam Çalışma Saati' },
     ];
-
+    this.loadTcknOptions();
     this.load();
+
+    this.isAdmin = this.roleEnum===RoleEnum.ADMIN;
   }
 
   async load() {
     const datas = await this.service.getWorklogReports(
       this.startDate,
-      this.endDate
+      this.endDate,
+      this.selectedTckns()
     );
     this.data.set(datas);
+  }
+
+  async loadTcknOptions() {
+    const tckns = await this.userService.getAllTckns();
+    this.tcknOptions.set(tckns);
+  }
+
+  onTcknChange(selectedTckns: string[]) {
+    this.selectedTckns.set(selectedTckns);
   }
 }

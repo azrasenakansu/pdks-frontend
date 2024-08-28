@@ -14,6 +14,11 @@ export class UserService extends ApiService{
     );
   }
 
+  async getAllTckns(): Promise<string[]> {
+    const users = await this.getAllUsers();
+    return users.map(user => user.tckn);
+  }
+  
   async searchByTckn(tckn: string){
     return await lastValueFrom(
       this.client.get<UserEntity>(this.baseUrl + `user/search/${tckn}`)
