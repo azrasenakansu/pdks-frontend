@@ -18,11 +18,19 @@ import { Credentials } from '../../models/entities/credential';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PasswordModule } from 'primeng/password';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, PasswordModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ButtonModule,
+    InputTextModule,
+    PasswordModule,
+    DividerModule
+  ],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,17 +55,29 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   async changePassword() {
-    if (this.value.newPass === this.value.newPassAgain) {
-      await this.authService.changePassword(
-        this.value.currentPass,
-        this.value.newPass
-      );
-      this.close();
-      this.popupService.success("Şifreniz başarıyla değiştirildi. Lütfen yeniden giriş yapınız.")
-      this.authService.logout();
-      this.router.navigateByUrl('login', { replaceUrl: true });
-    } else{
-      this.popupService.warning('Yeni şifreleriniz uyuşmuyor!');
+    const passwordExpression =
+      '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.+[\\W_]).{8,}$';
+    let regexp = new RegExp(passwordExpression);
+    let match = regexp.test(this.value.newPass);
+
+    if (match) {
+      if (this.value.newPass === this.value.newPassAgain) {
+        await this.authService.changePassword(
+          this.value.currentPass,
+          this.value.newPass
+        );
+        this.close();
+        this.popupService.success(
+          'Şifreniz başarıyla değiştirildi. Lütfen yeniden giriş yapınız.'
+        );
+        this.authService.logout();
+        this.router.navigateByUrl('login', { replaceUrl: true });
+      } else {
+        this.popupService.warning('Yeni şifreleriniz uyuşmuyor!');
+        this.attempt = true;
+      }
+    } else {
+      this.popupService.warning('Yeni şifreniz gereksinimlere uymuyor!');
       this.attempt = true;
     }
   }

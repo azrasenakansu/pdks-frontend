@@ -65,6 +65,7 @@ export class NavbarComponent implements OnInit {
     this.ref = this.dialogService.open(ChangePasswordComponent, {
       header: 'Şifre Değişikliği',
       width: '20%',
+      height: '65%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: true,
