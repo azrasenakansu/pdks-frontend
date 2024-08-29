@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { appRoutes } from './app.routes';
 import { StateService } from './services/state.service';
@@ -30,11 +30,11 @@ export const appConfig: ApplicationConfig = {
     MessageService,
     ConfirmationService,
     DialogService,
-    provideRouter(appRoutes),
+    provideRouter(appRoutes, withViewTransitions()),
     provideAnimations(),
     provideHttpClient(
       withInterceptors([jwtInterceptor, errorInterceptor]),
-    ),  
+    ),
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
