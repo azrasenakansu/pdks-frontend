@@ -46,12 +46,10 @@ export class ReportPageComponent {
   roleEnum = this.permissions?.authority === "ADMIN" ? RoleEnum.ADMIN : RoleEnum.USER;
   isAdmin: boolean = false
   selectedMonth: Date | undefined;
-  loaded: boolean = false; 
 
   ngOnInit() {
     const now = new Date();
-    this.startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-    this.endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    this.selectedMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     this.cols = [
       { field: 'tckn', header: 'TC Kimlik Numarası' },
       { field: 'name', header: 'Adı Soyadı' },
@@ -61,18 +59,14 @@ export class ReportPageComponent {
       { field: 'ext_descriptions', header: 'Açıklama' },
       { field: 'total_time', header: 'Toplam Çalışma Saati' },
     ];
+    this.isAdmin = this.roleEnum===RoleEnum.ADMIN;
     this.loadTcknOptions();
     this.load();
-    this.loaded = true;
-
-    this.isAdmin = this.roleEnum===RoleEnum.ADMIN;
   }
 
   async load() {
-    if(this.loaded){
-      this.startDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth(), 1)
-      this.endDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth()+1, 0)
-    }
+    this.startDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth(), 1)
+    this.endDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth()+1, 0)
     const datas = await this.service.getWorklogReports(
       this.startDate,
       this.endDate,
@@ -81,7 +75,19 @@ export class ReportPageComponent {
     this.data.set(datas);
   }
 
-
+  async downloadReport(){
+    this.startDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth(), 1)
+    this.endDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth()+1, 0)
+    const response = await this.service.downloadWorklogReport(this.startDate, this.endDate, this.selectedTckns());
+    const filename = response.headers.get('content-disposition')?.split('filename=')[1] as string;
+    const blob = response.body as Blob;    
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   async loadTcknOptions() {
     const tckns = await this.userService.getAllTckns();
