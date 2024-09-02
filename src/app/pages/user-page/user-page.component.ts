@@ -69,17 +69,17 @@ export class UserPageComponent {
   }
 
   async resetPassword(tckn: string){
-        if (
-          await this.confirmService.confirm({
-            message: 'Devam etmek istediğinize emin misiniz?',
-            header: 'Şifre Sıfırlanıyor',
-            acceptStyle: 'p-button-danger',
-            rejectStyle: 'p-button-secondary p-button-text',
-          })
-        ) {
-          await this.authService.resetPassword(tckn);
-          this.popupService.success('Kullanıcı şifresi başarıyla sıfırlandı.');
-        }
+      if (
+        await this.confirmService.confirm({
+          message: 'Devam etmek istediğinize emin misiniz?',
+          header: 'Şifre Sıfırlanıyor',
+          acceptStyle: 'p-button-danger',
+          rejectStyle: 'p-button-secondary p-button-text',
+        })
+      ) {
+        await this.authService.resetPassword(tckn);
+        this.popupService.success('Kullanıcı şifresi başarıyla sıfırlandı.');
+      }
   }
 
   showDialog(item: UserEntity | null) {

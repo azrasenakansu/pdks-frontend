@@ -71,12 +71,10 @@ export class AuthService extends ApiService {
   }
 
   async resetPassword(tckn: string): Promise<void>{
-    let params = new HttpParams().set('tckn',tckn);
+    let params = new HttpParams().set('tckn', tckn);
 
     return await lastValueFrom(
-      this.client.put<never>(`${this.baseUrl}auth/resetPassword`, {
-        params,
-      })
+      this.client.put<never>(this.baseUrl + 'auth/resetPassword', null, {params:params})
     );
   }
 }

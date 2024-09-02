@@ -16,12 +16,6 @@ export class WorklogEndpointService extends ApiService {
     );
   }
 
-  async getWorklogsByTckn() {
-    return await lastValueFrom(
-      this.client.get<Worklog[]>(this.baseUrl + 'worklogs/${tckn}')
-    );
-  }
-
   async getWorklogReports(
     startDate: Date,
     endDate: Date,
