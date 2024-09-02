@@ -59,8 +59,10 @@ export class ReportPageComponent {
       { field: 'ext_descriptions', header: 'Açıklama' },
       { field: 'total_time', header: 'Toplam Çalışma Saati' },
     ];
-    this.isAdmin = this.roleEnum===RoleEnum.ADMIN;
-    this.loadTcknOptions();
+    this.isAdmin = this.roleEnum===RoleEnum.ADMIN; 
+    if(this.isAdmin){
+      this.loadTcknOptions();
+    }
     this.load();
   }
 
