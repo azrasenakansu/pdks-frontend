@@ -13,15 +13,15 @@ export const appRoutes: Route[] = [
     {
       path: '',
       pathMatch: 'full',
-      redirectTo: 'dashboard'
+      redirectTo: 'reports'
     },
+    // {
+    //   path: 'dashboard',
+    //   component: DashboardComponent,
+    //   canActivate: [authGuard]
+    // },
     {
-      path: 'dashboard',
-      component: DashboardComponent,
-      canActivate: [authGuard]
-    },
-    {
-      path: 'import-pdks',
+      path: 'import',
       component: UploadPageComponent,
       canActivate: [authGuard]
     },
@@ -31,22 +31,22 @@ export const appRoutes: Route[] = [
       canActivate: [loginGuard]
     },
     {
-      path: 'user-page',
+      path: 'users',
       component: UserPageComponent,
       canActivate: [authGuard]
     },
     {
-      path: 'app-external-worklogs-page',
+      path: 'externals',
       component: ExternalWorklogsPageComponent,
       canActivate: [authGuard]
     },
     {
-      path: 'app-approval-page',
+      path: 'approvals',
       component: ApprovalPageComponent,
       canActivate: [authGuard]
     },
     {
-      path: 'app-report-page',
+      path: 'reports',
       component: ReportPageComponent,
       canActivate: [authGuard]
     },
