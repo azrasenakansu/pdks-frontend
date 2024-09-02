@@ -7,9 +7,8 @@
     </div>
     <div class="flex justify-between w-full">
         <div class="flex">
-
             <p-calendar [(ngModel)]="selectedMonth" view="month" dateFormat="mm/yy" readonlyInput="true" styleClass="mr-5" />
-            <p-multiSelect styleClass="mr-5" [ngClass]="!isAdmin ? 'hidden' : ''" [options]="tcknOptions()" [(ngModel)]="selectedTckns"
+            <p-multiSelect [maxSelectedLabels]="1" selectedItemsLabel="{0} kullanıcı seçildi." styleClass="mr-5 w-80 max-w-80" [ngClass]="!isAdmin ? 'hidden' : ''" [options]="users()" [(ngModel)]="selectedTckns" optionLabel="name" optionValue="tckn"
             placeholder="Kullanıcıları Seçin" [showClear]="true" (ngModelChange)="onTcknChange($event)"></p-multiSelect>
             <button pButton type="button" (click)="load()" label="Raporu Getir"
             styleClass="w-full"></button>

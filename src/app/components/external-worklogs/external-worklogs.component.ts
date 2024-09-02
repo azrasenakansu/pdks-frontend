@@ -23,7 +23,7 @@ import { PopupService } from '../../services/popup.service';
 import { ExternalWorklog } from '../../models/entities/externalWorklog';
 import { StringValue } from '../../models/common/string-value';
 import { CalendarModule } from 'primeng/calendar';
-import { stringValueToWorklogTypeEnum } from '../../models/common/externalworklog-enum';
+import { externalWorklogTypeToString, stringValueToWorklogTypeEnum } from '../../models/common/externalworklog-enum';
 
 @Component({
   selector: 'app-external-worklogs',
@@ -53,7 +53,6 @@ export class ExternalWorklogsComponent implements OnInit {
   worklogTypes: StringValue[] | undefined;
   selectedWorklogType: StringValue | undefined;
 
-  startDate: Date | undefined = new Date();
   startTime: Date | undefined;
   endTime: Date | undefined;
 
@@ -64,18 +63,27 @@ export class ExternalWorklogsComponent implements OnInit {
   constructor(public ref: DynamicDialogRef) {
     this.instance = this.dialogService.getInstance(this.ref);
   }
-  ngOnInit(): void {
 
+  ngOnInit(): void {
     this.worklogTypes = [{value:"Diğer"},{value:"Hybrid"},{value:"Aselsan"}];
-    const now = new Date();
-    this.startTime = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 9, 0, 0);
-    this.endTime = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 18, 0, 0);
     if (this.instance && this.instance.data) {
       this.isUpdate = true;
       const external = this.instance?.data as ExternalWorklog;
       this.value = external;
+      this.value.date = new Date(external.date);
+      let startParts = this.value.from.split(':');
+      let endParts = this.value.to.split(':');
+      this.startTime = new Date(this.value.date.getFullYear(), this.value.date.getMonth(), this.value.date.getDay(), parseInt(startParts[0]), parseInt(startParts[1]), 0);
+      this.endTime = new Date(this.value.date.getFullYear(), this.value.date.getMonth(), this.value.date.getDay(), parseInt(endParts[0]), parseInt(endParts[1]), 0);
+      this.selectedWorklogType = {value: externalWorklogTypeToString(this.value.type)};
     }
-
+    else{
+      const now = new Date();
+      this.value.date = now;
+      this.startTime = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 9, 0, 0);
+      this.endTime = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 18, 0, 0);
+    }
+    this.changeDetector.detectChanges();
   }
 
   close(result = false) {
@@ -83,11 +91,12 @@ export class ExternalWorklogsComponent implements OnInit {
   }
 
   async save() {
-    if(this.startTime === undefined || this.endTime === undefined ||this.startTime === null || this.endTime === null||this.startDate === null||this.startDate === undefined){
+    if(this.startTime === undefined || this.endTime === undefined ||this.startTime === null || this.endTime === null||this.value.date === null||this.value.date === undefined){
       this.popupService.warning("Başlangıç - Bitiş Saatleri Boş Bırakılamaz");
       return;
     }
-    this.value.date = new Date(this.startDate);
+    const fixedDate = new Date(this.value.date.getTime() +  (-1 * this.value.date.getTimezoneOffset() * 60 * 1000))
+    this.value.date = fixedDate;
     this.value.type = stringValueToWorklogTypeEnum(this.selectedWorklogType);
     this.value.from = formatDate(this.startTime,'HH:mm', "en-US");
     this.value.to = formatDate(this.endTime,'HH:mm', "en-US");

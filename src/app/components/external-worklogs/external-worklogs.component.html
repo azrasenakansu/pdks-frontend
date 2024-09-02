@@ -8,8 +8,8 @@
             <label class="text-sm" for="date">Ek Çalışma Tarihi</label>
             <!-- <input class="m-0" pInputText id="date" [(ngModel)]="value.date" /> -->
             <p-calendar
-            [(ngModel)]="startDate"
-            [readonlyInput]="true"
+            [(ngModel)]="value.date"
+            [readonlyInput]="true"            
             dateFormat="dd/mm/yy"
             [firstDayOfWeek]="1"
             [style]="{'width':'100%'}"
@@ -47,7 +47,7 @@
 </textarea>
         </div>
     </div>
-
+    
     <div class="flex justify-end space-x-4 pt-4">
         <p-button (onClick)="close()" label="İptal" severity="secondary" [text]="true"></p-button>
         <p-button (onClick)="save()" label="Kaydet"></p-button>

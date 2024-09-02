@@ -19,6 +19,7 @@ import { UserService } from '../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { RoleEnum } from '../../models/common/role-enum';
 import { CalendarModule } from 'primeng/calendar';
+import { UserEntity } from '../../models/entities/user';
 
 @Component({
   selector: 'app-report-page',
@@ -41,7 +42,7 @@ export class ReportPageComponent {
   endDate: Date = new Date();
   startDate: Date = new Date();
   selectedTckns = signal<string[]>([]);
-  tcknOptions = signal<string[]>([]);
+  users = signal<UserEntity[]>([]);
   permissions = this.state.$role();
   roleEnum = this.permissions?.authority === "ADMIN" ? RoleEnum.ADMIN : RoleEnum.USER;
   isAdmin: boolean = false
@@ -103,8 +104,8 @@ export class ReportPageComponent {
   }
 
   async loadTcknOptions() {
-    const tckns = await this.userService.getAllTckns();
-    this.tcknOptions.set(tckns);
+    const tckns = await this.userService.getAllUsers();
+    this.users.set(tckns);
   }
 
   onTcknChange(selectedTckns: string[]) {
