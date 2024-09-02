@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PopupService } from '../../services/popup.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'user-page',
@@ -28,6 +29,7 @@ import { PopupService } from '../../services/popup.service';
 export class UserPageComponent {
   private state: StateService = inject(StateService);
   private service: UserService = inject(UserService);
+  private authService : AuthService = inject(AuthService)
   private dialogService: DialogService = inject(DialogService);
   private confirmService: ConfirmService = inject(ConfirmService);
   private popupService = inject(PopupService);
@@ -64,6 +66,20 @@ export class UserPageComponent {
       this.load();
       this.popupService.success('Kullanıcı başarıyla silindi.');
     }
+  }
+
+  async resetPassword(tckn: string){
+        if (
+          await this.confirmService.confirm({
+            message: 'Devam etmek istediğinize emin misiniz?',
+            header: 'Şifre Sıfırlanıyor',
+            acceptStyle: 'p-button-danger',
+            rejectStyle: 'p-button-secondary p-button-text',
+          })
+        ) {
+          await this.authService.resetPassword(tckn);
+          this.popupService.success('Kullanıcı şifresi başarıyla sıfırlandı.');
+        }
   }
 
   showDialog(item: UserEntity | null) {

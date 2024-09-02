@@ -5,6 +5,7 @@ import { AuthResponse } from '../models/entities/auth-response';
 import { LocalStorageService } from './local-storage.service';
 import { StateService } from './state.service';
 import { jwtDecode } from "jwt-decode";
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -67,5 +68,15 @@ export class AuthService extends ApiService {
           newPassword: newPassword,
         })
       )
+  }
+
+  async resetPassword(tckn: string): Promise<void>{
+    let params = new HttpParams().set('tckn',tckn);
+
+    return await lastValueFrom(
+      this.client.put<never>(`${this.baseUrl}auth/resetPassword`, {
+        params,
+      })
+    );
   }
 }

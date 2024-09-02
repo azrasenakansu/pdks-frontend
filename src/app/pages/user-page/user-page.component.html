@@ -23,6 +23,8 @@
                                 icon="pi pi-pencil"></p-button>
                             <p-button [rounded]="true" [text]="true" (onClick)="delete(rowData.tckn)"
                                 icon="pi pi-trash"></p-button>
+                            <p-button [rounded]="true" [text]="true" (onClick)="resetPassword(rowData.tckn)"
+                                icon="pi pi-key"></p-button>
                         </div>
                     </ng-container>
                     <ng-template #dataTemplate>
