@@ -73,12 +73,23 @@ export class ReportPageComponent {
       this.selectedTckns()
     );
     this.data.set(datas);
+    if(datas === null || datas === undefined || datas.length === 0){
+      this.popupService.warning('Rapor mevcut değil.');
+    }
   }
 
   async downloadReport(){
     this.startDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth(), 1)
     this.endDate = new Date(this.selectedMonth!.getFullYear(),this.selectedMonth!.getMonth()+1, 0)
     const response = await this.service.downloadWorklogReport(this.startDate, this.endDate, this.selectedTckns());
+    if(response.status === 204){
+      this.popupService.warning('Rapor mevcut değil.');
+      return;
+    }
+    else if(response.status !== 200){
+      this.popupService.errror('Rapor indirilemedi.');
+      return;
+    }
     const filename = response.headers.get('content-disposition')?.split('filename=')[1] as string;
     const blob = response.body as Blob;    
     const link = document.createElement('a');
