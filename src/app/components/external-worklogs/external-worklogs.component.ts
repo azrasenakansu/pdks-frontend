@@ -53,12 +53,7 @@ export class ExternalWorklogsComponent implements OnInit {
   worklogTypes: StringValue[] | undefined;
   selectedWorklogType: StringValue | undefined;
 
-  startTime: Date | undefined;
-  endTime: Date | undefined;
-
-
   isUpdate = false;
-  isApprove=false;
 
   constructor(public ref: DynamicDialogRef) {
     this.instance = this.dialogService.getInstance(this.ref);
@@ -70,18 +65,13 @@ export class ExternalWorklogsComponent implements OnInit {
       this.isUpdate = true;
       const external = this.instance?.data as ExternalWorklog;
       this.value = external;
-      this.value.date = new Date(external.date);
-      let startParts = this.value.from.split(':');
-      let endParts = this.value.to.split(':');
-      this.startTime = new Date(this.value.date.getFullYear(), this.value.date.getMonth(), this.value.date.getDay(), parseInt(startParts[0]), parseInt(startParts[1]), 0);
-      this.endTime = new Date(this.value.date.getFullYear(), this.value.date.getMonth(), this.value.date.getDay(), parseInt(endParts[0]), parseInt(endParts[1]), 0);
       this.selectedWorklogType = {value: externalWorklogTypeToString(this.value.type)};
     }
     else{
       const now = new Date();
-      this.value.date = now;
-      this.startTime = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 9, 0, 0);
-      this.endTime = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 18, 0, 0);
+      this.value.date = formatDate(now, 'dd/MM/yyyy', 'en-US');
+      this.value.from = "09:00";
+      this.value.to = "18:00";
     }
     this.changeDetector.detectChanges();
   }
@@ -91,15 +81,11 @@ export class ExternalWorklogsComponent implements OnInit {
   }
 
   async save() {
-    if(this.startTime === undefined || this.endTime === undefined ||this.startTime === null || this.endTime === null||this.value.date === null||this.value.date === undefined){
+    if(this.value.from === undefined || this.value.to === undefined ||this.value.from === null || this.value.to === null||this.value.date === null||this.value.date === undefined){
       this.popupService.warning("Başlangıç - Bitiş Saatleri Boş Bırakılamaz");
       return;
     }
-    const fixedDate = new Date(this.value.date.getTime() +  (-1 * this.value.date.getTimezoneOffset() * 60 * 1000))
-    this.value.date = fixedDate;
     this.value.type = stringValueToWorklogTypeEnum(this.selectedWorklogType);
-    this.value.from = formatDate(this.startTime,'HH:mm', "en-US");
-    this.value.to = formatDate(this.endTime,'HH:mm', "en-US");
     if (!this.isUpdate) {
       await this.service.createExternalWorklog(this.value);
     } else {

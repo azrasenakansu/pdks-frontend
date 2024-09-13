@@ -3,7 +3,7 @@ import { ExternalWorklogType } from '../common/externalworklog-enum';
 export interface ExternalWorklog {
   id?: number;
   userTckn: string;
-  date: Date;
+  date: string;
   from: string;
   to: string;
   isApproved: boolean|null;

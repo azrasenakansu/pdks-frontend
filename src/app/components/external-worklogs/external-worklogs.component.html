@@ -9,6 +9,7 @@
             <!-- <input class="m-0" pInputText id="date" [(ngModel)]="value.date" /> -->
             <p-calendar
             [(ngModel)]="value.date"
+            dataType="string"
             [readonlyInput]="true"            
             dateFormat="dd/mm/yy"
             [firstDayOfWeek]="1"
@@ -19,7 +20,8 @@
             <label class="text-sm" for="from">Başlangıç Saati</label>
             <!-- <input class="m-0" pInputText id="from" [(ngModel)]="value.from" /> -->
             <p-calendar
-            [(ngModel)]="startTime"
+            [(ngModel)]="value.from"
+            dataType="string"
             [style]="{'width':'100%'}"
             [timeOnly]="true"
             [readonlyInput]="true"
@@ -30,7 +32,8 @@
             <label class="text-sm" for="to">Bitiş Saati</label>
             <!-- <input class="m-0" pInputText id="to" [(ngModel)]="value.to" /> -->
             <p-calendar
-            [(ngModel)]="endTime"
+            [(ngModel)]="value.to"
+            dataType="string"
             [style]="{'width':'100%'}"
             [timeOnly]="true"
             [readonlyInput]="true"
