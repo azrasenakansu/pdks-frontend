@@ -17,13 +17,29 @@
         <p-button styleClass="w-full" label="Raporu İndir" [outlined]="true" icon="pi pi-download" (onClick)="downloadReport()"></p-button>
     </div>
 
-    <p-table class="h-full" [columns]="cols" [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table class="h-full" rowGroupMode="subheader" groupRowsBy="tckn" [columns]="cols" [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th *ngFor="let col of columns">
-                    {{ col.header }}
+                    @if (col.field === "total_time") {
+                        <p class="m-0 p-0 text-right">{{ col.header }}</p>
+                    }
+                    @else {
+                        {{ col.header }}
+                    }
                 </th>
             </tr>
+        </ng-template>
+        <ng-template pTemplate="groupheader" let-rowData>
+            <!-- GROUP HEADER -->
+        </ng-template>
+        <ng-template pTemplate="groupfooter" let-rowData>
+            <tr>
+                <td colspan="7" class="bg-gray-300 text-right font-bold">
+                   Toplam: {{calculateTotalHours(rowData.tckn)}}
+                </td> 
+            </tr>
+
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
@@ -36,7 +52,7 @@
                     {{rowData.tckn}}
                     }
                     @else if (col.field === "total_time") {
-                    {{rowData.total_time}}
+                    <p class="m-0 p-0 text-right"> {{rowData.total_time}}</p>
                     }@else {
                     {{ rowData[col.field] |slice:0:15}}
                     }

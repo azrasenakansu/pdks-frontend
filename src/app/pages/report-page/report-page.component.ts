@@ -111,4 +111,22 @@ export class ReportPageComponent {
   onTcknChange(selectedTckns: string[]) {
     this.selectedTckns.set(selectedTckns);
   }
+
+  calculateTotalHours(tckn:string):string{
+    let hours = 0;
+    let minutes = 0;
+    this.data().filter(q => q.tckn === tckn).map(q => q.total_time).forEach(time => {
+      const parts = time.split(':');
+      hours += Number.parseInt(parts[0]);
+      minutes += Number.parseInt(parts[1]);
+    });
+
+    hours += (minutes / 60);
+    minutes %= 60;
+
+    hours = Math.trunc(hours);
+    minutes = Math.trunc(minutes);
+    
+    return hours.toLocaleString('en-US', {minimumIntegerDigits:2, maximumFractionDigits: 0, useGrouping:false}) + ":" + minutes.toLocaleString('en-US', {minimumIntegerDigits:2, maximumFractionDigits: 0, useGrouping:false});
+  }
 }
