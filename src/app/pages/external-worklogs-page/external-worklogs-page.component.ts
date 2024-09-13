@@ -38,6 +38,7 @@ export class ExternalWorklogsPageComponent {
   ngOnInit() {
     this.cols = [
       { field: 'tckn', header: 'TC Kimlik Numarası' },
+      { field: 'name', header: 'Adı Soyadı' },
       { field: 'date', header: 'Tarih' },
       { field: 'hours', header: 'Başlangıç - Bitiş Saati' },
       { field: 'description', header: 'Açıklama' },

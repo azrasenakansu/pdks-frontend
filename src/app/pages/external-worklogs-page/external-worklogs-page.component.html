@@ -28,9 +28,11 @@
                     }@else if (col.field === "hours") {
                     {{rowData.from}} - {{rowData.to}}
                     }@else if (col.field === "date") {
-                    {{rowData.date | date: 'dd/MM/yyyy'}}
+                    {{ rowData.date }}
                     }@else if (col.field === "tckn") {
                     {{rowData.user.tckn}}
+                    }@else if (col.field === "name") {
+                    {{rowData.user.name}}
                     }@else if (col.field === "isApproved") {
                         @switch (rowData.isApproved) {
                         @case (true) { 
