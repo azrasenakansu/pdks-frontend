@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import { TableModule, TablePageEvent } from 'primeng/table';
 import { StateService } from '../../services/state.service';
 import { ExternalWorklogsService } from '../../services/external-worklogs.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -24,6 +24,7 @@ import { ApproveExternalWorklogComponent } from '../../components/approve-extern
 import { FormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
+import { Page } from '../../models/common/page';
 
 
 @Component({
@@ -46,6 +47,11 @@ export class ApprovalPageComponent {
   data = signal<ExternalWorklog[]>([]);
   selectedFilter: string = "pending";
 
+  totalRows = signal<number>(0);
+  page = 0;
+  pageSize = 8;
+  firstIndex = 0;
+
   ngOnInit() {
     this.cols = [
       { field: 'tckn', header: 'TC Kimlik Numarası' },
@@ -65,16 +71,35 @@ export class ApprovalPageComponent {
     return externalWorklogTypeToString(value);
   }
 
+  onPage(event: TablePageEvent) {
+    this.page = event.first / event.rows;
+  }
+
+  resetPage() {
+    this.page = 0;
+    this.firstIndex = 0;
+    this.load();
+  }
+
   async load() {
-    let datas: ExternalWorklog[] = [];
+    let datas: Page<ExternalWorklog> = {
+      content: [],
+      size: 0,
+      number: 0,
+      totalElements: 0,
+      totalPages: 0,
+      numberOfElements: 0,
+      empty: false
+    };
       if (this.selectedFilter === 'pending') {
-        datas = await this.service.pendingExternalWorklog();
+        datas = await this.service.pendingExternalWorklog(this.page, this.pageSize);
       } else if (this.selectedFilter === 'approved') {
-        datas = await this.service.getApprovedExternalWorklog();
+        datas = await this.service.getApprovedExternalWorklog(this.page, this.pageSize);
       } else if (this.selectedFilter === 'rejected') {
-        datas = await this.service.rejectedExternalWorklog();
+        datas = await this.service.rejectedExternalWorklog(this.page, this.pageSize);
       }
-    this.data.set(datas);
+      this.totalRows.set(datas.totalElements);
+      this.data.set(datas.content);
   }
 
   async delete(id: number) {

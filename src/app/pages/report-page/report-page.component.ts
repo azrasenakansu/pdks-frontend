@@ -104,8 +104,8 @@ export class ReportPageComponent {
   }
 
   async loadTcknOptions() {
-    const tckns = await this.userService.getAllUsers();
-    this.users.set(tckns);
+    const tckns = await this.userService.getAllUsers(0, 2147483647);
+    this.users.set(tckns.content);
   }
 
   onTcknChange(selectedTckns: string[]) {

@@ -2,15 +2,20 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { lastValueFrom } from 'rxjs';
 import { UserEntity } from '../models/entities/user';
+import { Page } from '../models/common/page';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService extends ApiService{
 
-  async getAllUsers(){
+  async getAllUsers(page: number, size: number){
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
     return await lastValueFrom(
-      this.client.get<UserEntity[]>(this.baseUrl + 'user/all')
+      this.client.get<Page<UserEntity>>(this.baseUrl + 'user/all', {params})
     );
   }
   

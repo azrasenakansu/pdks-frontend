@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import { TableModule, TablePageEvent } from 'primeng/table';
 import { StateService } from '../../services/state.service';
 import { ExternalWorklogsService } from '../../services/external-worklogs.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -35,6 +35,11 @@ export class ExternalWorklogsPageComponent {
   cols!: Column[];
   data = signal<ExternalWorklog[]>([]);
 
+  totalRows = signal<number>(0);
+  page = 0;
+  pageSize = 8;
+  firstIndex = 0;
+
   ngOnInit() {
     this.cols = [
       { field: 'tckn', header: 'TC Kimlik Numarası' },
@@ -54,9 +59,20 @@ export class ExternalWorklogsPageComponent {
     return externalWorklogTypeToString(value);
   }
 
+  onPage(event: TablePageEvent) {
+    this.page = event.first / event.rows;
+  }
+
+  resetPage() {
+    this.page = 0;
+    this.firstIndex = 0;
+    this.load();
+  }
+
   async load() {
-    const datas = await this.service.getExternalWorklog();
-    this.data.set(datas);
+    const datas = await this.service.getExternalWorklog(this.page, this.pageSize);
+    this.totalRows.set(datas.totalElements);
+    this.data.set(datas.content);
   }
 
   async delete(id: number) {

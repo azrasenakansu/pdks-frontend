@@ -3,14 +3,19 @@ import { ApiService } from './api.service';
 import { lastValueFrom } from 'rxjs';
 import { Worklog } from '../models/entities/worklog';
 import { ExternalWorklog } from '../models/entities/externalWorklog';
+import { HttpParams } from '@angular/common/http';
+import { Page } from '../models/common/page';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExternalWorklogsService extends ApiService {
-  async getExternalWorklog() {
+  async getExternalWorklog(page: number, size: number) {
+    let params = new HttpParams()
+    .set('page', page)
+    .set('size', size);
     return await lastValueFrom(
-      this.client.get<ExternalWorklog[]>(this.baseUrl + 'externalWorklogs')
+      this.client.get<Page<ExternalWorklog>>(this.baseUrl + 'externalWorklogs', {params})
     );
   }
 
@@ -48,26 +53,35 @@ export class ExternalWorklogsService extends ApiService {
     );
   }
 
-  async pendingExternalWorklog() {
+  async pendingExternalWorklog(page: number, size: number) {
+    let params = new HttpParams()
+    .set('page', page)
+    .set('size', size);
     return await lastValueFrom(
-      this.client.get<ExternalWorklog[]>(
-        this.baseUrl + 'externalWorklogs/pending'
+      this.client.get<Page<ExternalWorklog>>(
+        this.baseUrl + 'externalWorklogs/pending', {params}
       )
     );
   }
 
-  async rejectedExternalWorklog() {
+  async rejectedExternalWorklog(page: number, size: number) {
+    let params = new HttpParams()
+    .set('page', page)
+    .set('size', size);
     return await lastValueFrom(
-      this.client.get<ExternalWorklog[]>(
-        this.baseUrl + 'externalWorklogs/rejected'
+      this.client.get<Page<ExternalWorklog>>(
+        this.baseUrl + 'externalWorklogs/rejected', {params}
       )
     );
   }
 
-  async getApprovedExternalWorklog() {
+  async getApprovedExternalWorklog(page: number, size: number) {
+    let params = new HttpParams()
+    .set('page', page)
+    .set('size', size);
     return await lastValueFrom(
-      this.client.get<ExternalWorklog[]>(
-        this.baseUrl + 'externalWorklogs/approved'
+      this.client.get<Page<ExternalWorklog>>(
+        this.baseUrl + 'externalWorklogs/approved', {params}
       )
     );
   }

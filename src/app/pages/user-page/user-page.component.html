@@ -6,7 +6,7 @@
         </div>
         <p-button label="Kullanıcı Oluştur" [outlined]="true" icon="pi pi-plus" (onClick)="showDialog(null)"></p-button>
     </div>
-    <p-table class="h-full" [columns]="cols" [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table class="h-full" [columns]="cols" [(first)]="firstIndex" [totalRecords]="totalRows()" [value]="data()" (onPage)="onPage($event)" [lazy]="true" (onLazyLoad)="load()" [paginator]="true" [rows]="pageSize" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th *ngFor="let col of columns">
