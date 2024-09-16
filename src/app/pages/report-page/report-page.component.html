@@ -17,7 +17,7 @@
         <p-button styleClass="w-full" label="Raporu İndir" [outlined]="true" icon="pi pi-download" (onClick)="downloadReport()"></p-button>
     </div>
 
-    <p-table class="h-full" rowGroupMode="subheader" groupRowsBy="tckn" [columns]="cols" [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table class="h-full" rowGroupMode="subheader" groupRowsBy="name" [columns]="cols" [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th *ngFor="let col of columns">
