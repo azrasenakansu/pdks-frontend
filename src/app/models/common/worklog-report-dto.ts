@@ -7,4 +7,5 @@ export interface WorklogReportDTO {
   ext_hours: string;
   description?: string;
   total_time:string;
+  uniqueName: string;
 }
