@@ -3,7 +3,7 @@
         <img class="w-[25svh] mb-10 self-center" src="proven.svg" alt="">
         <input class="mb-2" type="text" placeholder="Kullanıcı Adı" pInputText [(ngModel)]="username" />
         <p-password styleClass="w-full" class="mb-4 h-10 w-full" [feedback]="false" [(ngModel)]="password" placeholder="Şifre" [toggleMask]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-password>
-        <button class="bg-sky-400 border-sky-400" (click)="onLoginBtnClicked()" pButton label="Giriş"></button>
+        <button (click)="onLoginBtnClicked()" pButton label="Giriş"></button>
     </div>
 </div>
 
