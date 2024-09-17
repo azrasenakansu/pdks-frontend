@@ -1,6 +1,6 @@
 <div class="w-svw h-svh flex flex-col bg-gray-100 place-content-center items-center">
     <div class="bg-white rounded-xl flex flex-col p-20 items-stretch drop-shadow-md">
-        <img class="w-[25svh] mb-10 self-center" src="proven.svg" alt="">
+        <img draggable="false" class="w-[25svh] mb-10 self-center select-none" src="proven.svg">
         <input class="mb-2" type="text" placeholder="Kullanıcı Adı" pInputText [(ngModel)]="username" />
         <p-password styleClass="w-full" class="mb-4 h-10 w-full" [feedback]="false" [(ngModel)]="password" placeholder="Şifre" [toggleMask]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-password>
         <button (click)="onLoginBtnClicked()" pButton label="Giriş"></button>
