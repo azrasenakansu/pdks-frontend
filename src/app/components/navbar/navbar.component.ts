@@ -2,6 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
+  Signal,
+  computed,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -31,6 +33,13 @@ export class NavbarComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
   items: MenuItem[] | undefined;
   confirmService = inject(ConfirmService);
+  userChar: Signal<string> = computed(() => {
+    const fullName = this.state.$name();
+    if(fullName === null || fullName === undefined || fullName.length === 0){
+      return "";
+    }
+    return fullName.charAt(0);
+  })
 
   ngOnInit(): void {
     this.items = [
